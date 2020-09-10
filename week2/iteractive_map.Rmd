@@ -1,0 +1,46 @@
+---
+title: "Map"
+author: "Caroline Lisevski"
+date: "9/10/2020"
+output: html_document
+---
+
+## Creating an interactive map on R Markdown using `leaflet` package
+
+In this work we are going to plot an interactive map from the restaurants in Paris. The data was obtained in https://www.kaggle.com/svrcek/paris-restaurants.
+
+```{r}
+library(leaflet)
+library(dplyr)
+library(tidyverse)
+library(tidyr)
+set.seed(1986)
+rest.paris <- read.csv2("restaurants-casvp.csv")
+head(rest.paris)
+```
+
+From this data set, we will keep the columns with the restaurant's name (`Nom.restaurant`) and the latitude and longitude coordinates (`tt`). We will also split the column `tt` into two, separating latitude from longitude coordinates.
+
+```{r}
+rest.paris <- rest.paris %>% select("Nom.restaurant", "tt")
+colnames(rest.paris) <- c("Restaurant", "tt")
+rest.paris <- rest.paris[complete.cases(rest.paris),]
+rest.paris <- separate(rest.paris, col = tt, into = c("Latitude","Longitude"), sep = ",")
+rest.paris$Latitude <- as.numeric(rest.paris$Latitude)
+rest.paris$Longitude <- as.numeric(rest.paris$Longitude)
+head(rest.paris)
+```
+
+Now we are going to plot the interactive map using the data from the data frame above.
+
+```{r}
+rest.map <- rest.paris %>% leaflet() %>% addTiles() %>% 
+        setView(lat = 48.85, lng = 2.35, zoom = 12) %>%
+        addMarkers(lat = rest.paris$Latitude, lng = rest.paris$Longitude, 
+                   popup = rest.paris$Restaurant)
+rest.map
+```
+
+
+
+
