@@ -1,0 +1,67 @@
+---
+title: 'Shiny Presentation:'
+subtitle: 'Simulating the Probability of a ten-faced die rolled n times'
+author: "Caroline Lisevski"
+date: "9/12/2020"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+library(ggplot2)
+```
+
+## The Project
+
+This project is the final project from Developing Data Products course and the main objective is to write a Shiny application.
+
+Here it was built an application simulating the probability of a ten-faced die rolled n times.
+
+## How to include R code embedded on a slide
+
+The following code calculates the probability of a ten-faced die rolled n times.
+
+```{r, eval=FALSE}
+set.seed(1986)
+n <- 5000
+die <- 1:10
+vec.n <- n
+sum.n <- n
+ r <- 1
+for(i in 1:vec.n){
+      vec.n[i] <- roll <- sample(die, size = 1, replace = TRUE)
+      sum.n[i] <- sum(vec.n[1:i]==r)/i
+}
+```
+
+
+
+
+
+
+
+## Probability when n = 10000
+
+```{r, echo = FALSE}
+set.seed(1986)
+n <- 5000
+die <- 1:10
+vec.n <- n
+sum.n <- n
+ r <- 1
+for(i in 1:vec.n){
+      vec.n[i] <- roll <- sample(die, size = 1, replace = TRUE)
+      sum.n[i] <- sum(vec.n[1:i]==r)/i
+}
+ 
+ df <- cbind.data.frame(number = 1:n, sum.n)
+ ggplot(df, aes(x = number, y = sum.n)) + geom_point(color = "magenta") +
+         geom_hline(yintercept = 1/10, color = "blue")
+ 
+```
+
+## Slide with Plot
+
+```{r pressure}
+plot(pressure)
+```
+
